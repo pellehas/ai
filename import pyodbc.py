@@ -9,6 +9,9 @@ conn = pyodbc.connect(
 )
 
 cursor = conn.cursor()
+cursor.execute("SELECT TOP 1 * FROM school_schedule")
+row = cursor.fetchone()
+print(row)
 
 def get_schedule(student_id, day):
     query = """
@@ -66,5 +69,6 @@ response = client.chat.completions.create(
 )
 
 print(response.choices[0].message.content)
+
 
 
