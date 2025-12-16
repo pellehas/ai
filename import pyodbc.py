@@ -31,9 +31,9 @@ def get_schedule(student_id, day):
 from openai import AzureOpenAI
 
 client = AzureOpenAI(
-    api_key="YOUR_API_KEY",
+    api_key="6feH4aU7kbxLk9YcPb2UY6fQyK1QoFxKcXy3CGwdGnQdzRWwGFhKJQQJ99BLACfhMk5XJ3w3AAABACOGTIeG",
     api_version="2024-02-15-preview",
-    azure_endpoint="https://YOUR-RESOURCE.openai.azure.com/"
+    azure_endpoint=https://hasselnot.openai.azure.com/
 )
 
 student_id = "S001"
@@ -66,3 +66,4 @@ response = client.chat.completions.create(
 )
 
 print(response.choices[0].message.content)
+
