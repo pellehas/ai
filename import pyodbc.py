@@ -48,7 +48,7 @@ Schedule Data: {schedule_data}
 """
 
 response = client.chat.completions.create(
-    model="school-schedule-gpt",
+    model="gpt-4o (version:2024-11-20)",
     messages=[
         {
             "role": "system",
@@ -66,4 +66,5 @@ response = client.chat.completions.create(
 )
 
 print(response.choices[0].message.content)
+
 
