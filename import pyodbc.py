@@ -3,9 +3,9 @@ import pyodbc
 conn = pyodbc.connect(
     "DRIVER={ODBC Driver 18 for SQL Server};"
     "SERVER=hassel.database.windows.net;"
-    "DATABASE=schooldb;"
-    "UID=your-hasse;"
-    "PWD=your-Darthvader12!;"
+    "DATABASE=sql;"
+    "UID=hasse;"
+    "PWD=Darthvader12!;"
 )
 
 cursor = conn.cursor()
@@ -34,9 +34,9 @@ def get_schedule(student_id, day):
 from openai import AzureOpenAI
 
 client = AzureOpenAI(
-    api_key="6feH4aU7kbxLk9YcPb2UY6fQyK1QoFxKcXy3CGwdGnQdzRWwGFhKJQQJ99BLACfhMk5XJ3w3AAABACOGTIeG",
+    api_key="8Cy5m7umnMa0deJiQp0pq6itzDcYpUFAp296aXxnDqrWkLfkcBgrJQQJ99BLACfhMk5XJ3w3AAABACOGORt8",
     api_version="2024-02-15-preview",
-    azure_endpoint=https://hasselnot.openai.azure.com/
+    azure_endpoint="https://hasselnot2.openai.azure.com/"
 )
 
 student_id = "S001"
@@ -51,7 +51,7 @@ Schedule Data: {schedule_data}
 """
 
 response = client.chat.completions.create(
-    model="gpt-4o (version:2024-11-20)",
+    model="gpt-4o",
     messages=[
         {
             "role": "system",
