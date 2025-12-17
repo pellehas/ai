@@ -63,7 +63,7 @@ openai.api_key = os.getenv("sk-proj-bwH9t1rQrwrDrB1CQrDCkWv7dKSeRn0JJIe_O3W8IjVQ
 ")
 
 response = openai.ChatCompletion.create(
-    model="gpt-4",
+    model="gpt-4o",
     messages=[
         {
             "role": "system",
@@ -81,4 +81,5 @@ response = openai.ChatCompletion.create(
 )
 
 print(response.choices[0].message.content)
+
 
