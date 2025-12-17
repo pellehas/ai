@@ -1,6 +1,16 @@
-import pyodbc
-from openai import AzureOpenAI
+from dotenv import load_dotenv
+import os
 
+load_dotenv()
+api_key = os.getenv("OPENAI_API_KEY")
+import pyodbc
+import openai
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+# SQL Connection
 conn = pyodbc.connect(
     "DRIVER={ODBC Driver 18 for SQL Server};"
     "SERVER=hassel.database.windows.net;"
@@ -22,7 +32,6 @@ def get_schedule(student_id, day):
             (student_id, day)
         )
         rows = cursor.fetchall()
-
     return [
         {
             "subject": r.subject,
@@ -32,18 +41,10 @@ def get_schedule(student_id, day):
         for r in rows
     ]
 
-client = AzureOpenAI(
-    api_key="YOUR_AZURE_OPENAI_KEY",
-    api_version="2024-02-15-preview",
-    azure_endpoint="https://hasselnot2.openai.azure.com/"
-)
-
+# Fetch schedule
 student_id = "S001"
 day = "Monday"
-
 schedule_data = get_schedule(student_id, day)
-
-print("SCHEDULE FROM SQL:", schedule_data)
 
 prompt = f"""
 Student ID: {student_id}
@@ -56,14 +57,18 @@ Question:
 What classes do I have on Monday?
 """
 
-response = client.chat.completions.create(
-    model="hasselnot2"
+# OpenAI API call
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
+response = openai.ChatCompletion.create(
+    model="gpt-4",
     messages=[
         {
             "role": "system",
             "content": (
                 "You are a school scheduling assistant. "
-                "Only answer using the provided schedule data."
+                "Only answer using the provided schedule data. "
+                "If there are no classes, say so clearly."
             )
         },
         {
