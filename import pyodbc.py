@@ -48,6 +48,8 @@ prompt = f"""
 Student ID: {student_id}
 Day: {day}
 Schedule Data: {schedule_data}
+Question:
+What classes do I have on Monday
 """
 
 response = client.chat.completions.create(
@@ -69,6 +71,7 @@ response = client.chat.completions.create(
 )
 
 print(response.choices[0].message.content)
+
 
 
 
