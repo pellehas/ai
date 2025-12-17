@@ -1,64 +1,57 @@
-
-
-print(response.choices[0].message.content)
-from openai import OpenAI
 import pyodbc
-import os
-from dotenv import load_dotenv
 
-load_dotenv()
-client = OpenAI(api_key=os.getenv("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"))
-
-# SQL connection (your existing get_schedule function)
 conn = pyodbc.connect(
     "DRIVER={ODBC Driver 18 for SQL Server};"
     "SERVER=hassel.database.windows.net;"
     "DATABASE=sql;"
     "UID=hasse;"
-    "PWD=YOUR_PASSWORD;"
-    "Encrypt=yes;"
-    "TrustServerCertificate=no;"
+    "PWD=Darthvader12!;"
 )
 
+cursor = conn.cursor()
+cursor.execute("SELECT TOP 1 * FROM school_schedule")
+row = cursor.fetchone()
+print(row)
+
 def get_schedule(student_id, day):
-    with conn.cursor() as cursor:
-        cursor.execute(
-            """
-            SELECT subject, start_time, end_time, room
-            FROM school_schedule
-            WHERE student_id = ? AND day_of_week = ?
-            """,
-            (student_id, day)
-        )
-        rows = cursor.fetchall()
-    return [
-        {
-            "subject": r.subject,
-            "time": f"{r.start_time} - {r.end_time}",
-            "room": r.room
-        }
-        for r in rows
-    ]
+    query = """
+    SELECT subject, start_time, end_time, room
+    FROM school_schedule
+    WHERE student_id = ? AND day_of_week = ?
+    """
+    cursor.execute(query, (student_id, day))
+    rows = cursor.fetchall()
+
+    schedule = []
+    for row in rows:
+        schedule.append({
+            "subject": row.subject,
+            "time": f"{row.start_time} - {row.end_time}",
+            "room": row.room
+        })
+
+    return schedule
+from openai import AzureOpenAI
+
+client = AzureOpenAI(
+    api_key="3R4X6GB48qMPvlnMq5mXLEOY87Bu5PZnxR8iVvVNRYrpu8KKs1mbJQQJ99BLACfhMk5XJ3w3AAABACOGyIZD",
+    api_version="2024-02-15-preview",
+    azure_endpoint="https://hasselnot2.openai.azure.com/openai/v1/chat/completions"
+)
 
 student_id = "S001"
 day = "Monday"
+
 schedule_data = get_schedule(student_id, day)
 
-# Create prompt text
-prompt_text = f"""
+prompt = f"""
 Student ID: {student_id}
 Day: {day}
-
-Schedule data:
-{schedule_data}
-
-Question:
-What classes do I have on Monday?
+Schedule Data: {schedule_data}
 """
 
-# Call OpenAI Responses API
 response = client.chat.completions.create(
-    model="gpt-4",
+    model="gpt-4o",
     messages=[
         {
             "role": "system",
@@ -70,7 +63,7 @@ response = client.chat.completions.create(
         },
         {
             "role": "user",
-            "content": prompt_text
+            "content": prompt
         }
     ]
 )
