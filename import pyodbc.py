@@ -1,17 +1,15 @@
-from dotenv import load_dotenv
-import os
 
-load_dotenv()
-api_key = os.getenv("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
-")
+
+print(response.choices[0].message.content)
+from openai import OpenAI
 import pyodbc
-import openai
-from dotenv import load_dotenv
 import os
+from dotenv import load_dotenv
 
 load_dotenv()
+client = OpenAI(api_key=os.getenv("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"))
 
-# SQL Connection
+# SQL connection (your existing get_schedule function)
 conn = pyodbc.connect(
     "DRIVER={ODBC Driver 18 for SQL Server};"
     "SERVER=hassel.database.windows.net;"
@@ -42,12 +40,12 @@ def get_schedule(student_id, day):
         for r in rows
     ]
 
-# Fetch schedule
 student_id = "S001"
 day = "Monday"
 schedule_data = get_schedule(student_id, day)
 
-prompt = f"""
+# Create prompt text
+prompt_text = f"""
 Student ID: {student_id}
 Day: {day}
 
@@ -58,12 +56,9 @@ Question:
 What classes do I have on Monday?
 """
 
-# OpenAI API call
-openai.api_key = os.getenv("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
-")
-
-response = openai.ChatCompletion.create(
-    model="gpt-4o",
+# Call OpenAI Responses API
+response = client.chat.completions.create(
+    model="gpt-4",
     messages=[
         {
             "role": "system",
@@ -75,11 +70,12 @@ response = openai.ChatCompletion.create(
         },
         {
             "role": "user",
-            "content": prompt
+            "content": prompt_text
         }
     ]
 )
 
 print(response.choices[0].message.content)
+
 
 
