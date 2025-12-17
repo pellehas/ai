@@ -64,11 +64,15 @@ response = client.chat.completions.create(
         {
             "role": "user",
             "content": prompt
+            Question:
+What classes do I have on Monday?
+"""
         }
     ]
 )
 
 print(response.choices[0].message.content)
+
 
 
 
