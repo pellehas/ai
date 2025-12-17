@@ -2,7 +2,8 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
-api_key = os.getenv("OPENAI_API_KEY")
+api_key = os.getenv("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
+")
 import pyodbc
 import openai
 from dotenv import load_dotenv
@@ -58,7 +59,8 @@ What classes do I have on Monday?
 """
 
 # OpenAI API call
-openai.api_key = os.getenv("OPENAI_API_KEY")
+openai.api_key = os.getenv("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
+")
 
 response = openai.ChatCompletion.create(
     model="gpt-4",
@@ -79,3 +81,4 @@ response = openai.ChatCompletion.create(
 )
 
 print(response.choices[0].message.content)
+
